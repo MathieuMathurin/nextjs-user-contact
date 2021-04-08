@@ -13,10 +13,6 @@ First, run the development server:
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-OR
-
-Open [Heroku app](https://mathieu-mathurin-contact-app.herokuapp.com/)
-
 ## Authentication
 
 The application uses Github as a OAuth identity provider. Be sure to have a valid Github account to be able to interact with the application.
