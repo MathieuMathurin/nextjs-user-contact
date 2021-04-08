@@ -5,30 +5,75 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
-npm run dev
+> npm install
+> npm run dev
 # or
-yarn dev
+> yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Authentication
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+The application uses Github as a OAuth identity provider. Be sure to have a valid Github account to be able to interact with the application.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## What's missing
+- Units tests
+- Branded Sign in page
+- Better error handling
+- Empty states
+- Translations
 
-## Learn More
+## Mocked API
 
-To learn more about Next.js, take a look at the following resources:
+The http calls are mocked using [Mirage](https://miragejs.com/) which is running a server alongside the frontend application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+There are 5 routes being mocked by Mirage.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Contact model
+The contact model has the minimum required information, an id and a userId field used as a foreign key for a relational model.
+```typescript
+interface Contact {
+    id: string
+    userId: string
+    name: string
+    jobTitle: string
+    address: string
+    phoneNumbers: string[]
+    email: string
+    picture?: string
+}
 
-## Deploy on Vercel
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### /users/:userId/contacts
+#### GET
+Get all the user contacts.
+##### Response
+```json
+{
+    "contacts": []
+}
+```
+#### POST
+Create a new contact for the user
+##### Request Body
+Same as Contact interface but withouth sending the id.
+##### Response
+Same as Contact interface. The server sets the id on the Contact model.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### /users/:userId/contacts/:contactId
+#### GET
+Get a specific contact by id
+#### PUT
+Update a specific contact by replacing all of it's content.
+##### Request Body
+Same as Contact interfacem but without sending the id.
+##### Response
+204 No Content
+#### DELETE
+Remove a specific contact.
+##### Request
+Empty body
+##### Response
+204 No Content
